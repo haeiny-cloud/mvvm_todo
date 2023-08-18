@@ -1,4 +1,4 @@
-package com.example.mvvmtodolist
+package com.example.mvvmtodolist.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,12 +6,20 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mvvmtodolist.R
 import com.example.mvvmtodolist.databinding.ActivityMainBinding
-import java.lang.Thread.sleep
+import com.example.mvvmtodolist.db.TaskDatabase
+import com.example.mvvmtodolist.model.Task
+import com.example.mvvmtodolist.ui.todo.TodoActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var taskRecyclerViewAdapter: MyRecyclerViewAdapter
+
+    private lateinit var db: TaskDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        db = TaskDatabase.getInstance(this)!!
 
         taskRecyclerViewAdapter = MyRecyclerViewAdapter(this)
         binding.recyclerView.apply {
@@ -28,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.refreshLayout.setOnRefreshListener {
             getTaskFromDatabase()
+            taskRecyclerViewAdapter.notifyDataSetChanged()
             binding.refreshLayout.isRefreshing = false
         }
     }
@@ -35,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         getTaskFromDatabase()
+        taskRecyclerViewAdapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -51,8 +63,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTaskFromDatabase() {
-        taskRecyclerViewAdapter.tasks = Database.task
-        sleep(100L) // 자체 딜레이
-        taskRecyclerViewAdapter.notifyDataSetChanged()
+        CoroutineScope(Dispatchers.IO).launch {
+            taskRecyclerViewAdapter.tasks = db.taskDao().getAll() as MutableList<Task>
+        }
     }
 }
