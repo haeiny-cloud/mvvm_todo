@@ -6,14 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mvvmtodolist.databinding.ActivityDetailBinding
 import com.example.mvvmtodolist.db.TaskDatabase
 import com.example.mvvmtodolist.model.Task
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
 
-    private lateinit var db: TaskDatabase
+    @Inject
+    lateinit var db: TaskDatabase
     private lateinit var task: Task
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +25,6 @@ class DetailActivity : AppCompatActivity() {
 
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        db = TaskDatabase.getInstance(this)!!
 
         val taskId = intent.getIntExtra("taskId", -1)
 

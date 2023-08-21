@@ -6,22 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mvvmtodolist.databinding.ActivityTodoBinding
 import com.example.mvvmtodolist.db.TaskDatabase
 import com.example.mvvmtodolist.model.Task
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TodoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTodoBinding
 
-    private lateinit var db: TaskDatabase
+    @Inject
+    lateinit var db: TaskDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityTodoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        db = TaskDatabase.getInstance(this)!!
 
         binding.btnAdd.setOnClickListener {
             saveTask(binding.editTitle.text.toString(), binding.editDetail.text.toString())

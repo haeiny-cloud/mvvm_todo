@@ -9,7 +9,7 @@ import com.example.mvvmtodolist.model.Task
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM table_task")
+    @Query("SELECT * FROM table_task ORDER BY taskId DESC")
     fun getAll(): List<Task>
 
     // taskId를 통해 task 가져오기
