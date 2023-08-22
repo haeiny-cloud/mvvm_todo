@@ -3,7 +3,7 @@ package com.example.mvvmtodolist.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mvvmtodolist.model.Task
+import com.example.mvvmtodolist.data.entity.Task
 import com.example.mvvmtodolist.repo.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

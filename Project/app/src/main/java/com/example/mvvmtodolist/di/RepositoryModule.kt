@@ -1,6 +1,6 @@
 package com.example.mvvmtodolist.di
 
-import com.example.mvvmtodolist.dao.TaskDao
+import com.example.mvvmtodolist.data.dao.TaskDao
 import com.example.mvvmtodolist.repo.TaskRepository
 import dagger.Module
 import dagger.Provides

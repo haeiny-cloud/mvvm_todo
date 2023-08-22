@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmtodolist.databinding.RecyclerViewLayoutBinding
-import com.example.mvvmtodolist.model.Task
+import com.example.mvvmtodolist.data.entity.Task
 import com.example.mvvmtodolist.ui.detail.DetailActivity
 
 class MyRecyclerViewAdapter(

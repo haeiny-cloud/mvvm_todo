@@ -2,8 +2,8 @@ package com.example.mvvmtodolist.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.mvvmtodolist.dao.TaskDao
-import com.example.mvvmtodolist.db.TaskDatabase
+import com.example.mvvmtodolist.data.dao.TaskDao
+import com.example.mvvmtodolist.data.db.TaskDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

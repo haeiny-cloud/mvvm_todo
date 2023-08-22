@@ -1,7 +1,7 @@
 package com.example.mvvmtodolist.repo
 
-import com.example.mvvmtodolist.dao.TaskDao
-import com.example.mvvmtodolist.model.Task
+import com.example.mvvmtodolist.data.dao.TaskDao
+import com.example.mvvmtodolist.data.entity.Task
 import javax.inject.Inject
 
 class TaskRepository @Inject constructor(private val dao: TaskDao) {

@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mvvmtodolist.databinding.ActivityDetailBinding
-import com.example.mvvmtodolist.model.Task
+import com.example.mvvmtodolist.data.entity.Task
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

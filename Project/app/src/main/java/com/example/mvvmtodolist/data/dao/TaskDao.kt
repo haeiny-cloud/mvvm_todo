@@ -1,11 +1,11 @@
-package com.example.mvvmtodolist.dao
+package com.example.mvvmtodolist.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.mvvmtodolist.model.Task
+import com.example.mvvmtodolist.data.entity.Task
 
 @Dao
 interface TaskDao {

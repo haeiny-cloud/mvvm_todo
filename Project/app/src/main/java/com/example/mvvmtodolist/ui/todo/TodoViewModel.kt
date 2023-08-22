@@ -1,7 +1,7 @@
 package com.example.mvvmtodolist.ui.todo
 
 import androidx.lifecycle.ViewModel
-import com.example.mvvmtodolist.model.Task
+import com.example.mvvmtodolist.data.entity.Task
 import com.example.mvvmtodolist.repo.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
