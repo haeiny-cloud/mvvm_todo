@@ -30,8 +30,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         binding.btnDelete.setOnClickListener {
-            detailViewModel.deleteTask(task!!)
-            finish()
+            deleteTask()
         }
 
         setContentView(binding.root)
@@ -49,6 +48,11 @@ class DetailActivity : AppCompatActivity() {
         binding.detail.text = task!!.detail
     }
 
+    private fun deleteTask() {
+        detailViewModel.deleteTask(task!!)
+        Toast.makeText(this, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+        finish()
+    }
     private fun errorCheck() {
         Toast.makeText(this, "존재하지 않는 할일입니다.", Toast.LENGTH_SHORT).show()
         finish()
