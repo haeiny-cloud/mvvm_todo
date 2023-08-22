@@ -4,33 +4,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvvmtodolist.R
 import com.example.mvvmtodolist.databinding.ActivityMainBinding
-import com.example.mvvmtodolist.db.TaskDatabase
-import com.example.mvvmtodolist.model.Task
 import com.example.mvvmtodolist.ui.todo.TodoActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var taskRecyclerViewAdapter: MyRecyclerViewAdapter
 
-    @Inject
-    lateinit var db: TaskDatabase
+    private val mainViewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // View Binding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setSupportActionBar(binding.toolbar)
+
+        binding.apply {
+            lifecycleOwner = this@MainActivity
+            vm = mainViewModel
+        }
 
         taskRecyclerViewAdapter = MyRecyclerViewAdapter(this)
         binding.recyclerView.apply {
@@ -38,17 +36,19 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
+        mainViewModel.tasks.observe(this) {
+            mainViewModel.tasks.value?.let { taskRecyclerViewAdapter.submitList(it) }
+        }
+
         binding.refreshLayout.setOnRefreshListener {
-            getTaskFromDatabase()
-            taskRecyclerViewAdapter.notifyDataSetChanged()
+            mainViewModel.getTasks()
             binding.refreshLayout.isRefreshing = false
         }
     }
 
     override fun onResume() {
         super.onResume()
-        getTaskFromDatabase()
-        taskRecyclerViewAdapter.notifyDataSetChanged()
+        mainViewModel.getTasks()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -62,11 +62,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun getTaskFromDatabase() {
-        CoroutineScope(Dispatchers.IO).launch {
-            taskRecyclerViewAdapter.tasks = db.taskDao().getAll() as MutableList<Task>
-        }
     }
 }

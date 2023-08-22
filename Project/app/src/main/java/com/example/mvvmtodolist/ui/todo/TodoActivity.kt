@@ -2,23 +2,16 @@ package com.example.mvvmtodolist.ui.todo
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mvvmtodolist.databinding.ActivityTodoBinding
-import com.example.mvvmtodolist.db.TaskDatabase
 import com.example.mvvmtodolist.model.Task
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class TodoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTodoBinding
-
-    @Inject
-    lateinit var db: TaskDatabase
-
+    private val todoViewModel: TodoViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,7 +19,10 @@ class TodoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnAdd.setOnClickListener {
-            saveTask(binding.editTitle.text.toString(), binding.editDetail.text.toString())
+            val title = binding.editTitle.text.toString()
+            val detail = binding.editDetail.text.toString()
+
+            saveTask(title, detail)
             Toast.makeText(this, "작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
@@ -36,9 +32,7 @@ class TodoActivity : AppCompatActivity() {
         task.title = title
         task.detail = detail
 
-        CoroutineScope(Dispatchers.IO).launch {
-            db.taskDao().saveTask(task)
-            finish()
-        }
+        todoViewModel.saveTask(task)
+        finish()
     }
 }

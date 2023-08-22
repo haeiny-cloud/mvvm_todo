@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmtodolist.databinding.RecyclerViewLayoutBinding
 import com.example.mvvmtodolist.model.Task
@@ -11,9 +13,7 @@ import com.example.mvvmtodolist.ui.detail.DetailActivity
 
 class MyRecyclerViewAdapter(
     private val context: Context
-) : RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder>() {
-
-    var tasks = mutableListOf<Task>()
+) : ListAdapter<Task, MyRecyclerViewAdapter.ViewHolder>(TaskDiffUtil) {
 
     inner class ViewHolder(
         private val binding: RecyclerViewLayoutBinding
@@ -34,9 +34,19 @@ class MyRecyclerViewAdapter(
         return ViewHolder(RecyclerViewLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun getItemCount(): Int = tasks.size
+    override fun getItemCount(): Int = currentList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(tasks[position])
+        holder.bind(getItem(position))
+    }
+}
+
+object TaskDiffUtil : DiffUtil.ItemCallback<Task>() {
+    override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
+        return oldItem.taskId == newItem.taskId
+    }
+
+    override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
+        return oldItem == newItem
     }
 }

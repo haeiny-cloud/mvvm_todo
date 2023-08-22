@@ -2,6 +2,7 @@ package com.example.mvvmtodolist.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.mvvmtodolist.dao.TaskDao
 import com.example.mvvmtodolist.db.TaskDatabase
 import dagger.Module
 import dagger.Provides
@@ -22,5 +23,11 @@ object DatabaseModule {
             TaskDatabase::class.java,
             "task.db"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesTaskDao(database: TaskDatabase): TaskDao {
+        return database.taskDao()
     }
 }
