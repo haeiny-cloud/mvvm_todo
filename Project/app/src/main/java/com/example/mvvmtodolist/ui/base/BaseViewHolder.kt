@@ -2,7 +2,7 @@ package com.example.mvvmtodolist.ui.base
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import androidx.databinding.library.baseAdapters.BR
+import com.example.mvvmtodolist.BR
 
 class BaseViewHolder<T>(
     private val binding: ViewDataBinding

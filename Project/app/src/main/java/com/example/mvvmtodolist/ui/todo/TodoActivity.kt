@@ -1,29 +1,23 @@
 package com.example.mvvmtodolist.ui.todo
 
-import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import com.example.mvvmtodolist.databinding.ActivityTodoBinding
+import com.example.mvvmtodolist.R
 import com.example.mvvmtodolist.data.entity.Task
+import com.example.mvvmtodolist.databinding.ActivityTodoBinding
+import com.example.mvvmtodolist.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TodoActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTodoBinding
-    private val todoViewModel: TodoViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityTodoBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        binding.btnAdd.setOnClickListener {
-            val title = binding.editTitle.text.toString()
-            val detail = binding.editDetail.text.toString()
+class TodoActivity : BaseActivity<ActivityTodoBinding, TodoViewModel>() {
+    override val layoutId: Int = R.layout.activity_todo
+    override val viewModel: TodoViewModel by viewModels()
+    override fun setUp() {
+        mViewDataBinding.btnAdd.setOnClickListener {
+            val title = mViewDataBinding.editTitle.text.toString()
+            val detail = mViewDataBinding.editDetail.text.toString()
 
             saveTask(title, detail)
-            Toast.makeText(this, "작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -32,7 +26,8 @@ class TodoActivity : AppCompatActivity() {
         task.title = title
         task.detail = detail
 
-        todoViewModel.saveTask(task)
+        viewModel.saveTask(task)
+        Toast.makeText(this, "작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
         finish()
     }
 }
