@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvvmtodolist.R
 import com.example.mvvmtodolist.databinding.ActivityMainBinding
+import com.example.mvvmtodolist.ui.detail.DetailActivity
 import com.example.mvvmtodolist.ui.todo.TodoActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,7 +31,14 @@ class MainActivity : AppCompatActivity() {
             vm = mainViewModel
         }
 
-        taskRecyclerViewAdapter = MyRecyclerViewAdapter(this)
+        taskRecyclerViewAdapter = MyRecyclerViewAdapter()
+
+        taskRecyclerViewAdapter.setOnItemClickListener { view, task, position ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("taskId", task.taskId)
+            startActivity(intent)
+        }
+
         binding.recyclerView.apply {
             adapter = taskRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
