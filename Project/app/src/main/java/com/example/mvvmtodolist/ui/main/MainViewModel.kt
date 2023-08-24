@@ -3,7 +3,6 @@ package com.example.mvvmtodolist.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mvvmtodolist.data.entity.Task
-import com.example.mvvmtodolist.repo.TaskRepository
 import com.example.mvvmtodolist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -12,9 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
-) : BaseViewModel() {
+class MainViewModel @Inject constructor() : BaseViewModel() {
 
     private var _tasks: MutableLiveData<MutableList<Task>> = MutableLiveData()
     val tasks: LiveData<MutableList<Task>> get() = _tasks
@@ -23,9 +20,5 @@ class MainViewModel @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             _tasks.postValue(taskRepository.getTasks() as MutableList<Task>)
         }
-    }
-
-    init {
-        getTasks()
     }
 }
