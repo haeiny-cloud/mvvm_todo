@@ -14,8 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor() : BaseViewModel() {
 
-    private var _tasks: MutableLiveData<MutableList<Task>> = MutableLiveData()
-    val tasks: LiveData<MutableList<Task>> get() = _tasks
+    private var _tasks: MutableLiveData<List<Task>> = MutableLiveData()
+    val tasks: LiveData<List<Task>> get() = _tasks
 
     private var page = 1
     private var _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -35,7 +35,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             _isLoading.postValue(true)
             delay(1000L)
-            _tasks.postValue(_tasks.value?.plus(taskRepository.getTasks(++page) as MutableList<Task>) as MutableList<Task>?)
+            _tasks.postValue(_tasks.value?.plus(taskRepository.getTasks(++page)))
             _isLoading.postValue(false)
         }
     }
