@@ -27,11 +27,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         taskRecyclerViewAdapter = MyRecyclerViewAdapter()
 
         taskRecyclerViewAdapter.setOnItemClickListener { view, task, position ->
-            if (position % 10 != 0) {
-                val intent = Intent(this, DetailActivity::class.java)
-                intent.putExtra("taskId", task.taskId)
-                startActivity(intent)
-            }
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("taskId", task.taskId)
+            startActivity(intent)
         }
 
         mViewDataBinding.recyclerView.apply {
