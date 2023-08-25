@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
             _isLoading.postValue(true)
             delay(1000L)
             page = 1
-            _tasks.postValue(taskRepository.getTasks(page) as MutableList<Task>)
+            _tasks.postValue(taskRepository.getTasks(page))
             _isLoading.postValue(false)
         }
     }
