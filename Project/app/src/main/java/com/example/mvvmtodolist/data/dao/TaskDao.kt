@@ -9,8 +9,8 @@ import com.example.mvvmtodolist.data.entity.Task
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM table_task ORDER BY taskId DESC")
-    fun getAll(): List<Task>
+    @Query("SELECT * FROM table_task ORDER BY taskId DESC LIMIT 10 OFFSET (:page - 1) * 10")
+    fun getAll(page: Int): List<Task>
 
     // taskId를 통해 task 가져오기
     @Query("SELECT * FROM table_task WHERE taskId = :taskId")

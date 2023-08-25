@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class TaskRepository @Inject constructor(private val dao: TaskDao) {
 
-    fun getTasks(): List<Task> {
-        return dao.getAll()
+    fun getTasks(page: Int): List<Task> {
+        return dao.getAll(page)
     }
 
     fun getTask(taskId: Int): Task {

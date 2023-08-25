@@ -17,4 +17,5 @@ class MyRecyclerViewAdapter : BaseRecyclerViewAdapter<Task>(TaskDiffUtil()) {
     }
 
     override fun getItemViewType(position: Int): Int = R.layout.recycler_view_layout
+
 }
