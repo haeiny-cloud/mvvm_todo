@@ -1,24 +1,28 @@
 package com.example.mvvmtodolist.ui.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.mvvmtodolist.data.entity.Task
+import com.example.mvvmtodolist.repo.TaskRepository
 import com.example.mvvmtodolist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor() : BaseViewModel() {
+class DetailViewModel @Inject constructor(
+    private val taskRepository: TaskRepository
+) : BaseViewModel() {
 
-    private var _task: MutableLiveData<Task> = MutableLiveData()
-    val task: LiveData<Task> get() = _task
+    private var _task: MutableSharedFlow<Task> = MutableSharedFlow()
+    val task: SharedFlow<Task> = _task.asSharedFlow()
 
     fun getTask(taskId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            _task.postValue(taskRepository.getTask(taskId))
+            _task.emit(taskRepository.getTask(taskId))
         }
     }
 
@@ -27,5 +31,4 @@ class DetailViewModel @Inject constructor() : BaseViewModel() {
             taskRepository.deleteTask(task)
         }
     }
-
 }

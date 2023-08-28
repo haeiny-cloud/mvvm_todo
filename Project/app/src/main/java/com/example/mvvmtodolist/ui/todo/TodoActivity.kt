@@ -22,11 +22,7 @@ class TodoActivity : BaseActivity<ActivityTodoBinding, TodoViewModel>() {
     }
 
     private fun saveTask(title: String, detail: String) {
-        val task = Task()
-        task.title = title
-        task.detail = detail
-
-        viewModel.saveTask(task)
+        viewModel.saveTask(Task(0, title, detail))
         Toast.makeText(this, "작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
         finish()
     }

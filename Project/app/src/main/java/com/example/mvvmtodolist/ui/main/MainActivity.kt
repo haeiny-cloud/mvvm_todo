@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmtodolist.R
@@ -13,6 +14,8 @@ import com.example.mvvmtodolist.ui.base.BaseActivity
 import com.example.mvvmtodolist.ui.detail.DetailActivity
 import com.example.mvvmtodolist.ui.todo.TodoActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
@@ -47,26 +50,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             })
         }
 
-        viewModel.tasks.observe(this) {
-            viewModel.tasks.value?.let { taskRecyclerViewAdapter.submitList(it) }
+        lifecycleScope.launch {
+            viewModel.tasks.collect { tasks ->
+                taskRecyclerViewAdapter.submitList(taskRecyclerViewAdapter.currentList + tasks)
+            }
         }
 
-        viewModel.isLoading.observe(this) {
-            if (it)
-                mViewDataBinding.progressBar.visibility = View.VISIBLE
-            else
-                mViewDataBinding.progressBar.visibility = View.GONE
+        lifecycleScope.launch {
+            viewModel.isLoading.collectLatest { isLoading ->
+                if (isLoading)
+                    mViewDataBinding.progressBar.visibility = View.VISIBLE
+                else
+                    mViewDataBinding.progressBar.visibility = View.GONE
+            }
         }
 
         mViewDataBinding.refreshLayout.setOnRefreshListener {
+            taskRecyclerViewAdapter.submitList(emptyList())
             viewModel.getTask()
             mViewDataBinding.refreshLayout.isRefreshing = false
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getTask()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

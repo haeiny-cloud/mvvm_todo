@@ -2,10 +2,12 @@ package com.example.mvvmtodolist.ui.detail
 
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.mvvmtodolist.R
 import com.example.mvvmtodolist.databinding.ActivityDetailBinding
 import com.example.mvvmtodolist.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
@@ -16,9 +18,12 @@ class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
         if (taskId == -1) errorCheck()
 
         viewModel.getTask(taskId)
-        viewModel.task.observe(this) {
-            if (it == null) errorCheck()
-            mViewDataBinding.item = it
+
+        lifecycleScope.launch {
+            viewModel.task.collect {
+                if (it.taskId == 0) errorCheck()
+                mViewDataBinding.item = it
+            }
         }
 
         mViewDataBinding.btnDelete.setOnClickListener {

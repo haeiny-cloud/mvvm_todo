@@ -8,6 +8,4 @@ data class Task(
     @PrimaryKey(autoGenerate = true) var taskId: Int = 0,
     var title: String,
     var detail: String,
-) {
-    constructor() : this(0, "", "")
-}
+)
