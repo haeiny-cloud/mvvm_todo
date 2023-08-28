@@ -72,6 +72,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        taskRecyclerViewAdapter.submitList(emptyList())
+        viewModel.getTask()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true

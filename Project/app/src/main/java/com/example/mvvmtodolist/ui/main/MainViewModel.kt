@@ -30,24 +30,24 @@ class MainViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
     fun getTask() {
         CoroutineScope(Dispatchers.IO).launch {
-            _isLoading.value = true
+            _isLoading.emit(true)
 
             delay(1000L)
             page = 1
             _tasks.emit(taskRepository.getTasks(page))
 
-            _isLoading.value = false
+            _isLoading.emit(false)
         }
     }
 
     fun getMoreTask() {
         CoroutineScope(Dispatchers.IO).launch {
-            _isLoading.value = true
+            _isLoading.emit(true)
 
             delay(1000L)
             _tasks.emit(taskRepository.getTasks(++page))
 
-            _isLoading.value = false
+            _isLoading.emit(false)
         }
     }
 
