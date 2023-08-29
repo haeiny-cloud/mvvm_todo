@@ -2,23 +2,33 @@ package com.example.mvvmtodolist.repo
 
 import com.example.mvvmtodolist.data.dao.TaskDao
 import com.example.mvvmtodolist.data.entity.Task
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TaskRepository @Inject constructor(private val dao: TaskDao) {
 
-    fun getTasks(page: Int): List<Task> {
-        return dao.getAll(page)
+    suspend fun getTasks(page: Int): List<Task> {
+        return withContext(Dispatchers.IO) {
+            dao.getAll(page)
+        }
     }
 
-    fun getTask(taskId: Int): Task {
-        return dao.getTask(taskId)
+    suspend fun getTask(taskId: Int): Task {
+        return withContext(Dispatchers.IO) {
+            dao.getTask(taskId)
+        }
     }
 
-    fun saveTask(task: Task) {
-        dao.saveTask(task)
+    suspend fun saveTask(task: Task) {
+        withContext(Dispatchers.IO) {
+            dao.saveTask(task)
+        }
     }
 
-    fun deleteTask(task: Task) {
-        dao.deleteTask(task)
+    suspend fun deleteTask(task: Task) {
+        withContext(Dispatchers.IO) {
+            dao.deleteTask(task)
+        }
     }
 }

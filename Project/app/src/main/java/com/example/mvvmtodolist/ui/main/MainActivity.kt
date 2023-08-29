@@ -66,7 +66,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mViewDataBinding.refreshLayout.setOnRefreshListener {
-            taskRecyclerViewAdapter.submitList(emptyList())
             viewModel.getTask()
             mViewDataBinding.refreshLayout.isRefreshing = false
         }
@@ -74,7 +73,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        taskRecyclerViewAdapter.submitList(emptyList())
         viewModel.getTask()
     }
 

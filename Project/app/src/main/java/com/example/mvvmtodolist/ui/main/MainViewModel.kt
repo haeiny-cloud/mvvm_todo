@@ -1,11 +1,10 @@
 package com.example.mvvmtodolist.ui.main
 
+import androidx.lifecycle.viewModelScope
 import com.example.mvvmtodolist.data.entity.Task
 import com.example.mvvmtodolist.repo.TaskRepository
 import com.example.mvvmtodolist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +28,7 @@ class MainViewModel @Inject constructor(
     private var _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
     fun getTask() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             _isLoading.emit(true)
 
             delay(1000L)
@@ -41,7 +40,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getMoreTask() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             _isLoading.emit(true)
 
             delay(1000L)
@@ -49,9 +48,5 @@ class MainViewModel @Inject constructor(
 
             _isLoading.emit(false)
         }
-    }
-
-    init {
-        getTask()
     }
 }
